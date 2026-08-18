@@ -1,0 +1,4 @@
+interface:
+  display_name: "Competitor Evidence Pack"
+  short_description: "Build public-source research with traceable evidence"
+  default_prompt: "Use $competitor-evidence-pack to create a public-source evidence pack, preserve failures, and separate facts from inference."
