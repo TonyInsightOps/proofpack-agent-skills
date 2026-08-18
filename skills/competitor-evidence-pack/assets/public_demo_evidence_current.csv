@@ -1,0 +1,5 @@
+evidence_id,company,category,source_url,collected_at,status,observation,confidence
+E101,ExampleCo A,homepage,https://example.com/a,2026-08-19T00:00:00Z,success,Public homepage is available.,high
+E102,ExampleCo A,pricing,https://example.com/a/pricing,2026-08-19T00:01:00Z,success,Public pricing page lists four plans.,high
+E104,ExampleCo B,careers,https://example.com/b/careers,2026-08-19T00:03:00Z,success,Public careers page lists two roles.,medium
+E105,ExampleCo B,releases,https://example.com/b/releases,2026-08-19T00:04:00Z,success,Public releases page is available.,high
