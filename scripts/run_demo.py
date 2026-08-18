@@ -106,6 +106,41 @@ def main() -> int:
             passed, detail = False, str(error)
         results.append(("evidence-change-ledger", passed, detail))
 
+        integrity_manifest = excel_dir / "delivery-manifest.json"
+        process = run(
+            [
+                sys.executable,
+                "scripts/delivery_integrity.py",
+                "build",
+                "--root",
+                str(excel_dir),
+                "--output",
+                str(integrity_manifest),
+                "cleaned.csv",
+                "exceptions.csv",
+                "audit_summary.json",
+            ]
+        )
+        verify_process = run(
+            [
+                sys.executable,
+                "scripts/delivery_integrity.py",
+                "verify",
+                "--root",
+                str(excel_dir),
+                "--manifest",
+                str(integrity_manifest),
+                "--strict-extras",
+            ]
+        )
+        try:
+            summary = json.loads(verify_process.stdout)
+            passed = process.returncode == 0 and verify_process.returncode == 0 and summary["verified"]
+            detail = f'{summary["counts"]["verified"]} files verified against SHA-256 manifest'
+        except (KeyError, json.JSONDecodeError) as error:
+            passed, detail = False, str(error)
+        results.append(("delivery-integrity", passed, detail))
+
     for name, passed, detail in results:
         print(f'[{"PASS" if passed else "FAIL"}] {name}: {detail}')
 
