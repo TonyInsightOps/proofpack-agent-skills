@@ -1,0 +1,4 @@
+interface:
+  display_name: "Excel Audit"
+  short_description: "Clean tables with a defensible audit trail"
+  default_prompt: "Use $excel-audit to audit this tabular dataset, preserve the source, flag ambiguity, and deliver reconciliation evidence."
