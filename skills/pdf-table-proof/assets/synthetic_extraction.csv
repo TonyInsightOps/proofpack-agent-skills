@@ -1,0 +1,7 @@
+record_id,source_file,page,field,extracted_value,qa_status,exception_note
+R001,synthetic_invoice.pdf,1,invoice_number,INV-1001,pass,
+R001,synthetic_invoice.pdf,1,total,1250.00,pass,
+R001,synthetic_invoice.pdf,1,currency,USD,pass,
+R002,synthetic_invoice.pdf,2,invoice_number,INV-1002,pass,
+R002,synthetic_invoice.pdf,2,total,980.00,pass,
+R002,synthetic_invoice.pdf,2,customer_reference,,unreadable,Source text is obscured; value intentionally left blank.
