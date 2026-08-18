@@ -1,0 +1,4 @@
+interface:
+  display_name: "PDF Table Proof"
+  short_description: "Verify extracted tables with page-level lineage"
+  default_prompt: "Use $pdf-table-proof to extract the requested PDF fields and provide page-linked evidence, exceptions, and reconciliation checks."
