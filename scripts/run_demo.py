@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run all three ProofPack validators against bundled safe fixtures."""
+"""Run ProofPack validators and the change ledger against bundled safe fixtures."""
 
 from __future__ import annotations
 
@@ -86,6 +86,25 @@ def main() -> int:
         except (OSError, KeyError, json.JSONDecodeError) as error:
             passed, detail = False, str(error)
         results.append(("competitor-evidence-pack", passed, detail))
+
+        delta_output = output_root / "evidence-delta.json"
+        process = run(
+            [
+                sys.executable,
+                "skills/competitor-evidence-pack/scripts/compare_evidence.py",
+                "skills/competitor-evidence-pack/assets/public_demo_evidence.csv",
+                "skills/competitor-evidence-pack/assets/public_demo_evidence_current.csv",
+                "--output",
+                str(delta_output),
+            ]
+        )
+        try:
+            summary = json.loads(delta_output.read_text(encoding="utf-8"))
+            passed = process.returncode == 0 and summary["review_needed"] == 4
+            detail = f'{summary["review_needed"]} review signals; timestamps excluded from changes'
+        except (OSError, KeyError, json.JSONDecodeError) as error:
+            passed, detail = False, str(error)
+        results.append(("evidence-change-ledger", passed, detail))
 
     for name, passed, detail in results:
         print(f'[{"PASS" if passed else "FAIL"}] {name}: {detail}')
