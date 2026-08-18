@@ -1,0 +1,5 @@
+evidence_id,company,category,source_url,collected_at,status,observation,confidence
+E001,ExampleCo A,homepage,https://example.com/a,2026-08-18T00:00:00Z,success,Public homepage is available.,high
+E002,ExampleCo A,pricing,https://example.com/a/pricing,2026-08-18T00:01:00Z,success,Public pricing page lists three plans.,medium
+E003,ExampleCo B,homepage,https://example.com/b,2026-08-18T00:02:00Z,success,Public homepage is available.,high
+E004,ExampleCo B,careers,https://example.com/b/careers,2026-08-18T00:03:00Z,not_found,No approved public careers page was located.,n/a
