@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -169,6 +170,43 @@ class ProofPackTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "duplicate comparison identity"):
                 module.compare_evidence(source, source)
+
+    def test_delivery_manifest_detects_content_change(self):
+        module = load_module(
+            "delivery_integrity",
+            ROOT / "scripts/delivery_integrity.py",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "cleaned.csv").write_text("id,value\n1,alpha\n", encoding="utf-8")
+            (root / "exceptions.csv").write_text("row,issue\n", encoding="utf-8")
+            manifest = module.build_manifest(root, ["exceptions.csv", "cleaned.csv"])
+            manifest_path = root / "delivery-manifest.json"
+            manifest_path.write_text(
+                json.dumps(manifest, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            initial = module.verify_manifest(root, manifest_path, strict_extras=True)
+            self.assertTrue(initial["verified"])
+            self.assertEqual(initial["counts"], {"verified": 2})
+
+            (root / "cleaned.csv").write_text("id,value\n1,changed\n", encoding="utf-8")
+            changed = module.verify_manifest(root, manifest_path, strict_extras=True)
+            self.assertFalse(changed["verified"])
+            changed_file = next(item for item in changed["files"] if item["path"] == "cleaned.csv")
+            self.assertEqual(changed_file["status"], "changed")
+            self.assertIn("hash_mismatch", changed_file["issues"])
+
+    def test_delivery_manifest_rejects_unsafe_paths(self):
+        module = load_module(
+            "delivery_integrity_unsafe",
+            ROOT / "scripts/delivery_integrity.py",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with self.assertRaisesRegex(ValueError, "unsafe manifest path"):
+                module.build_manifest(root, ["../private.csv"])
 
 
 if __name__ == "__main__":
