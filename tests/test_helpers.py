@@ -131,6 +131,45 @@ class ProofPackTests(unittest.TestCase):
             self.assertIn("observation_required", error_types)
             self.assertIn("success_needs_confidence", error_types)
 
+    def test_change_ledger_detects_deltas_without_timestamp_noise(self):
+        module = load_module(
+            "evidence_delta",
+            ROOT / "skills/competitor-evidence-pack/scripts/compare_evidence.py",
+        )
+        result = module.compare_evidence(
+            ROOT / "skills/competitor-evidence-pack/assets/public_demo_evidence.csv",
+            ROOT / "skills/competitor-evidence-pack/assets/public_demo_evidence_current.csv",
+        )
+        self.assertEqual(
+            result["counts"],
+            {
+                "added_check": 1,
+                "changed": 2,
+                "missing_from_current": 1,
+                "unchanged": 1,
+            },
+        )
+        self.assertEqual(result["review_needed"], 4)
+        unchanged = next(change for change in result["changes"] if change["change_type"] == "unchanged")
+        self.assertNotEqual(unchanged["baseline"]["collected_at"], unchanged["current"]["collected_at"])
+        self.assertEqual(unchanged["baseline"]["fingerprint"], unchanged["current"]["fingerprint"])
+
+    def test_change_ledger_rejects_duplicate_identities(self):
+        module = load_module(
+            "evidence_delta_duplicates",
+            ROOT / "skills/competitor-evidence-pack/scripts/compare_evidence.py",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "evidence.csv"
+            source.write_text(
+                "evidence_id,company,category,source_url,collected_at,status,observation,confidence\n"
+                "E001,ExampleCo,pricing,https://example.com/pricing,2026-08-18T12:00:00Z,success,One plan.,high\n"
+                "E002,ExampleCo,pricing,https://example.com/pricing,2026-08-19T12:00:00Z,success,Two plans.,high\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "duplicate comparison identity"):
+                module.compare_evidence(source, source)
+
 
 if __name__ == "__main__":
     unittest.main()
