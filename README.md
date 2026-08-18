@@ -54,6 +54,20 @@ The ledger creates a review queue; it does **not** decide whether a difference
 is material. A missing current check is not proof that a page or fact
 disappeared, and every commercial interpretation still requires source review.
 
+## Differentiator: content-addressed delivery integrity
+
+`delivery_integrity.py` creates a deterministic JSON manifest for an explicit
+allowlist of deliverable files. It records each relative path, byte size, and
+SHA-256 hash, then verifies missing, changed, or unexpected files after handoff.
+Paths that escape the delivery root and symlinks are rejected.
+
+This is an integrity check against a specific manifest, **not** a digital
+signature. It does not prove who created a file, where it came from, whether its
+contents are correct, or whether somebody replaced both the files and the
+manifest. Filenames in a manifest can also be sensitive, so use sanitized
+client-safe names and transfer it through the same approved private channel as
+the deliverables.
+
 ## Quick start
 
 There is no installation, account, API key, or service to configure. Open a
@@ -83,6 +97,16 @@ python3 skills/competitor-evidence-pack/scripts/compare_evidence.py \
   skills/competitor-evidence-pack/assets/public_demo_evidence.csv \
   skills/competitor-evidence-pack/assets/public_demo_evidence_current.csv \
   --output demo-output/evidence-delta.json
+
+python3 scripts/delivery_integrity.py build \
+  --root demo-output/excel \
+  --output demo-output/excel/delivery-manifest.json \
+  cleaned.csv exceptions.csv audit_summary.json
+
+python3 scripts/delivery_integrity.py verify \
+  --root demo-output/excel \
+  --manifest demo-output/excel/delivery-manifest.json \
+  --strict-extras
 ```
 
 Run all tests:
@@ -102,7 +126,7 @@ exceptions still require visual review.
 
 ## Current testing scope
 
-The current suite contains exactly ten tests:
+The current suite contains exactly twelve tests:
 
 1. Excel sample rows reconcile after deterministic keep-first deduplication.
 2. Excel output cannot overwrite the only source file.
@@ -116,6 +140,8 @@ The current suite contains exactly ten tests:
 9. The change ledger detects changed, added, missing, and unchanged checks while
    ignoring collection-time-only differences.
 10. Duplicate company/category/source identities are rejected before comparison.
+11. A delivery manifest verifies unchanged files and detects a content change.
+12. Delivery paths that escape the declared root are rejected.
 
 The fixtures are intentionally small and synthetic or use placeholder public
 URLs. The suite tests the helpers' validation contracts; it does not test XLSX
@@ -171,6 +197,10 @@ PDF、不做扫描件 OCR，也不能替代对原始页面的人工核验。运�
 两期公开证据表还可以生成确定性的变化账本。账本会忽略单纯的采集时间变化，
 列出新增、变化、未复现与未变化记录，并保留前后指纹；它只生成复核队列，
 不会自动断言某项差异具有商业重要性。
+
+交付前还可以为明确列出的文件生成 SHA-256 完整性清单，帮助客户发现交接后
+的缺失、改动或额外文件。它不是数字签名，不能证明作者、来源、真实性或内容
+正确性；若文件和清单一起被替换，也不能提供身份保证。
 
 短期用途是作为自由职业投标的可验证作品；长期可扩展为批量清洗工具、
 PDF 审计工具和持续竞品监控服务。
