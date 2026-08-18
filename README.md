@@ -1,5 +1,12 @@
 # ProofPack
 
+![ProofPack — audit-ready data delivery](docs/proofpack-hero.png)
+
+[![Tests](https://github.com/TonyInsightOps/proofpack-agent-skills/actions/workflows/test.yml/badge.svg)](https://github.com/TonyInsightOps/proofpack-agent-skills/actions/workflows/test.yml)
+![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB)
+![Local only](https://img.shields.io/badge/processing-local--only-16A34A)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > **Local-only and stdlib-only:** the helper scripts make no network requests,
 > emit no telemetry, require no credentials, and use only the Python standard
 > library. Python 3.9 or newer is required.
@@ -108,6 +115,23 @@ The MIT license permits commercial use. The open skills are deliberately small;
 paid work can cover custom rules, larger document sets, private deployment,
 review, and recurring monitoring. Use a funded marketplace contract or another
 lawful payment channel before beginning paid work.
+
+### Need an analyst-reviewed deliverable?
+
+I offer fixed-scope CSV audits, page-linked PDF extraction QA, and public-source
+competitive research. Every paid engagement starts only after the marketplace
+contract is active and funded.
+
+| Service | Typical starter scope | Starting price |
+|---|---|---:|
+| CSV data-quality mini audit | Up to 5,000 rows, one deterministic duplicate key, cleaned CSV, exception log, QA summary | US$99 |
+| PDF-to-table proof pack | Page-linked extraction register, exception log, reconciliation, review notes | US$149 |
+| Competitive intelligence research pack | Five companies, source-linked evidence register, executive brief | US$299 |
+
+**[Hire me on Upwork](https://www.upwork.com/freelancers/~0126ecd9d346d44de2)**
+
+For privacy, do not attach customer files or personal data to GitHub issues.
+Scope and private file transfer begin only after the contract is active and funded.
 
 ---
 
