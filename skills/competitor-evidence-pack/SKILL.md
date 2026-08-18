@@ -22,10 +22,17 @@ interpretation.
 
 Run `scripts/validate_evidence.py` on the evidence register before delivery.
 
+For a second approved snapshot, run `scripts/compare_evidence.py` against the
+baseline and current registers. Review every `changed`, `added_check`, and
+`missing_from_current` row before describing a business change. Collection
+timestamps are lineage, not changes by themselves.
+
 ## Boundaries
 
 - Public sources only; no login bypass, CAPTCHA bypass, private-person research,
   cold outreach, or automated posting.
 - Respect website terms, robots directives, and reasonable request rates.
 - Do not turn weak evidence into financial, legal, or investment advice.
+- Do not call a row change material without reviewing the underlying sources.
+- A missing current check is not proof that a page or fact disappeared.
 - Do not expose confidential client context in filenames, examples, or commits.
