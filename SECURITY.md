@@ -17,6 +17,11 @@ Review `git diff --cached` before every public push. If a credential is exposed,
 revoke or rotate it immediately; removing a file from a later commit is not
 enough.
 
+Delivery manifests contain filenames and content hashes. Hashes do not
+anonymize sensitive material, and a manifest is not a digital signature. Use
+sanitized relative filenames, keep private manifests in the approved delivery
+channel, and never publish a customer manifest as proof of authenticity.
+
 ## Responsible reports
 
 For vulnerabilities in these scripts, open a private security advisory rather
