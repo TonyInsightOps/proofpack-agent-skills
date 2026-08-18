@@ -41,6 +41,19 @@ checks into part of the deliverable.
 | `pdf-table-proof` | `build_proof_manifest.py` checks an already-extracted CSV register for source/page lineage and QA exceptions | No PDF opening, table extraction, rendering, OCR, or visual accuracy verification |
 | `competitor-evidence-pack` | `validate_evidence.py` checks a prepared public-source register for URLs, timestamps, observations, confidence, status, and coverage | No web fetching, scraping, truth verification, analysis generation, outreach, or posting |
 
+## Differentiator: deterministic evidence change ledger
+
+Recurring monitoring fails when a new collection timestamp is mistaken for a
+real change. `compare_evidence.py` compares two prepared evidence registers by
+company, category, and source URL, while deliberately excluding collection time
+from change classification. It reports `added_check`, `changed`, `unchanged`,
+and `missing_from_current`, identifies the exact fields that changed, and emits
+a SHA-256 fingerprint for each before/after state.
+
+The ledger creates a review queue; it does **not** decide whether a difference
+is material. A missing current check is not proof that a page or fact
+disappeared, and every commercial interpretation still requires source review.
+
 ## Quick start
 
 There is no installation, account, API key, or service to configure. Open a
@@ -65,6 +78,11 @@ python3 skills/pdf-table-proof/scripts/build_proof_manifest.py \
 python3 skills/competitor-evidence-pack/scripts/validate_evidence.py \
   skills/competitor-evidence-pack/assets/public_demo_evidence.csv \
   --output demo-output/evidence-check.json
+
+python3 skills/competitor-evidence-pack/scripts/compare_evidence.py \
+  skills/competitor-evidence-pack/assets/public_demo_evidence.csv \
+  skills/competitor-evidence-pack/assets/public_demo_evidence_current.csv \
+  --output demo-output/evidence-delta.json
 ```
 
 Run all tests:
@@ -84,7 +102,7 @@ exceptions still require visual review.
 
 ## Current testing scope
 
-The current suite contains exactly eight tests:
+The current suite contains exactly ten tests:
 
 1. Excel sample rows reconcile after deterministic keep-first deduplication.
 2. Excel output cannot overwrite the only source file.
@@ -95,6 +113,9 @@ The current suite contains exactly eight tests:
 7. The public-placeholder competitor register passes its delivery checks.
 8. Competitor evidence without a public URL, timezone-aware timestamp,
    observation, or usable success confidence is rejected.
+9. The change ledger detects changed, added, missing, and unchanged checks while
+   ignoring collection-time-only differences.
+10. Duplicate company/category/source identities are rejected before comparison.
 
 The fixtures are intentionally small and synthetic or use placeholder public
 URLs. The suite tests the helpers' validation contracts; it does not test XLSX
@@ -146,6 +167,10 @@ ProofPack 的定位是给自由职业数据交付做“证据卫生检查”，�
 其中 PDF 辅助脚本只验证已经提取好的 CSV 记录、页码和来源字段；它不读取
 PDF、不做扫描件 OCR，也不能替代对原始页面的人工核验。运行需要 Python
 3.9 或更高版本，无需安装第三方依赖、登录账户或提供 API 密钥。
+
+两期公开证据表还可以生成确定性的变化账本。账本会忽略单纯的采集时间变化，
+列出新增、变化、未复现与未变化记录，并保留前后指纹；它只生成复核队列，
+不会自动断言某项差异具有商业重要性。
 
 短期用途是作为自由职业投标的可验证作品；长期可扩展为批量清洗工具、
 PDF 审计工具和持续竞品监控服务。
