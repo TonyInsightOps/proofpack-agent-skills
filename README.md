@@ -77,8 +77,20 @@ terminal in the directory containing this README and run the safe local demo:
 python3 scripts/run_demo.py
 ```
 
-It uses only the bundled synthetic/placeholder fixtures and prints a clear
-`[PASS]` or `[FAIL]` for each validator. To run validators individually:
+It uses only bundled synthetic and placeholder data. The summary shows what a
+buyer can verify without sharing any files:
+
+```text
+[PASS] excel-audit: 5 input -> 4 retained
+[PASS] pdf-table-proof: 6 fields across 2 source pages
+[PASS] competitor-evidence-pack: 4 checks across 2 placeholder companies
+[PASS] evidence-change-ledger: 4 review signals; timestamps excluded from changes
+[PASS] delivery-integrity: 3 files verified against SHA-256 manifest
+[PASS] ProofPack demo: 5/5 validators passed
+```
+
+The demo deletes its temporary output when it exits. To keep the CSVs, exception
+log, and proof manifests for review, run the individual commands below:
 
 ```bash
 python3 skills/excel-audit/scripts/audit_csv.py \
