@@ -121,6 +121,19 @@ python3 scripts/delivery_integrity.py verify \
   --strict-extras
 ```
 
+### Review a sample delivery
+
+After running the CSV command above, open `demo-output/excel/` and check three files:
+
+| File | What to verify on the bundled sample |
+|---|---|
+| `cleaned.csv` | Four data rows remain. `C001` is retained and `C004` is removed by the explicit `keep-first` rule. |
+| `exceptions.csv` | Both source rows in the duplicate group are listed. The blank phone and signup date are flagged, not filled in. |
+| `audit_summary.json` | The counts reconcile: five input rows, four retained, one removed. The four exception entries are review notes, not four removed rows. |
+
+This checks the agreed duplicate rule and makes missing values visible. It does
+not establish that two matching email addresses belong to the same real customer.
+
 Run all tests:
 
 ```bash
