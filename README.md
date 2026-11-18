@@ -149,6 +149,13 @@ register's page/source lineage and QA fields, then produces a proof manifest.
 It cannot verify that OCR or transcription matches the visual source; material
 exceptions still require visual review.
 
+On the bundled sample, open `demo-output/pdf-proof.json`: expect six field
+rows across one source file, two source pages, and two records. Five fields
+are marked `pass`; page 2's `customer_reference` is marked `unreadable` and
+left blank with an explanation in the input register. `proof_ready: true`
+means the register passed structural checks, not that all fields were readable
+or independently verified against the PDF.
+
 ## Current testing scope
 
 The current suite contains exactly twelve tests:
