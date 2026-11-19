@@ -121,6 +121,14 @@ python3 scripts/delivery_integrity.py verify \
   --strict-extras
 ```
 
+### Read the integrity check
+
+Check `verified` first, then use `files` and `extra_files` to locate any
+problems. The `verify` command exits with `0` when verification succeeds and
+`2` when it returns `verified: false`. A missing or changed listed file fails
+verification; unlisted files fail it only with `--strict-extras`. Keep an
+independent copy of the original manifest to compare against after handoff.
+
 ### Review a sample delivery
 
 After running the CSV command above, open `demo-output/excel/` and check three files:
