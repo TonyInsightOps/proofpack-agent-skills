@@ -164,6 +164,19 @@ left blank with an explanation in the input register. `proof_ready: true`
 means the register passed structural checks, not that all fields were readable
 or independently verified against the PDF.
 
+### Review the sample evidence changes
+
+Open `demo-output/evidence-delta.json` after running the comparison above. The
+bundled fixtures produce four entries to review: two changed checks, one added
+check, and one check missing from the current register. One additional homepage
+check is unchanged: its collection date moved, but its evidence fingerprint did
+not.
+
+For a concrete example, the placeholder pricing check changes from three plans
+to four. Review its `changed_fields` and the before/after records, then confirm
+against the source before reporting a real price or plan change. A check missing
+from the register is a gap to investigate, not evidence the page was removed.
+
 ## Current testing scope
 
 The current suite contains exactly twelve tests:
