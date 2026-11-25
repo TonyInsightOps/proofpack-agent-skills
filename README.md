@@ -77,6 +77,13 @@ terminal in the directory containing this README and run the safe local demo:
 python3 scripts/run_demo.py
 ```
 
+On Windows PowerShell, run this from the repository root if your Python
+command is `python` (verified on Windows with Python 3.11.9):
+
+```powershell
+python scripts/run_demo.py
+```
+
 It uses only bundled synthetic and placeholder data. The summary shows what a
 buyer can verify without sharing any files:
 
