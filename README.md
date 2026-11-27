@@ -231,11 +231,16 @@ contract is active and funded.
 
 | Service | Typical starter scope | Starting price |
 |---|---|---:|
-| CSV data-quality mini audit | Up to 5,000 rows, one deterministic duplicate key, cleaned CSV, exception log, QA summary | US$99 |
+| CSV deterministic cleanup + QA | Up to 5,000 rows, one deterministic duplicate key, cleaned CSV, exception log, QA summary | US$99 |
 | PDF-to-table proof pack | Page-linked extraction register, exception log, reconciliation, review notes | US$149 |
 | Competitive intelligence research pack | Five companies, source-linked evidence register, executive brief | US$299 |
 
 **[Hire me on Upwork](https://www.upwork.com/freelancers/~0126ecd9d346d44de2)**
+
+For a report that flags issues without modifying the input, see the separate
+[CSV Brief audit](https://github.com/TonyInsightOps/csv-brief#client-ready-service).
+The ProofPack cleanup option applies only the duplicate rule agreed with you;
+it does not guess missing values or merge near-duplicates.
 
 For privacy, do not attach customer files or personal data to GitHub issues.
 Scope and private file transfer begin only after the contract is active and funded.
